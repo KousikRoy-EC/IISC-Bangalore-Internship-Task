@@ -1,5 +1,6 @@
 import React from "react";
 import "./component.css";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { RiEBikeLine } from "react-icons/ri";
 import { AiFillCar } from "react-icons/ai";
@@ -10,25 +11,33 @@ import { IoMdBus } from "react-icons/io";
 import { IoCarOutline } from "react-icons/io5";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const [selectedMode, setSelectedMode] = useState("");
   const [selectedDistance, setSelectedDistance] = useState("");
-  const [submitted, setSubmitted] = useState(false);
   const [modeBgColor, setModeBgColor] = useState({});
   const [distanceBgColor, setDistanceBgColor] = useState({});
-
+  const [err, setErr] = useState(false);
   const handleModeClick = (mode) => {
     setSelectedMode(mode);
-    setModeBgColor({ backgroundColor: "#43444c" });
+    setModeBgColor({ backgroundColor: "#43444c", color: "white" });
   };
 
   const handleDistanceClick = (distance) => {
     setSelectedDistance(distance);
-    setDistanceBgColor({ backgroundColor: "#43444c" });
+    setDistanceBgColor({ backgroundColor: "#43444c", color: "white" });
   };
 
-  const setData = (mode, distance) => {
-    console.log(mode, distance);
-    setSubmitted(true);
+  const clickHandle = () => {
+    if (selectedMode && selectedDistance) {
+      navigate("/modes", {
+        state: {
+          "Mode": selectedMode,
+          "distance": selectedDistance,
+        },
+      });
+    } else {
+      setErr(true);
+    }
   };
 
   return (
@@ -43,7 +52,7 @@ const HomePage = () => {
 
         <div className="Options">
           <div
-            style={selectedMode == "Bus" ? modeBgColor : {}}
+            style={selectedMode === "Bus" ? modeBgColor : {}}
             onClick={() => handleModeClick("Bus")}
             className="opt"
           >
@@ -51,7 +60,7 @@ const HomePage = () => {
             Bus
           </div>
           <div
-            style={selectedMode == "Metro" ? modeBgColor : {}}
+            style={selectedMode === "Metro" ? modeBgColor : {}}
             onClick={() => handleModeClick("Metro")}
             className="opt"
           >
@@ -59,7 +68,7 @@ const HomePage = () => {
             Metro
           </div>
           <div
-            style={selectedMode == "Two-wheeler" ? modeBgColor : {}}
+            style={selectedMode === "Two-wheeler" ? modeBgColor : {}}
             onClick={() => handleModeClick("Two-wheeler")}
             className="opt"
           >
@@ -67,7 +76,7 @@ const HomePage = () => {
             Two-wheeler
           </div>
           <div
-            style={selectedMode == "Car" ? modeBgColor : {}}
+            style={selectedMode === "Car" ? modeBgColor : {}}
             onClick={() => handleModeClick("Car")}
             className="opt"
           >
@@ -75,15 +84,15 @@ const HomePage = () => {
             Car
           </div>
           <div
-            style={selectedMode == "Walk / Bicycle" ? modeBgColor : {}}
+            style={selectedMode === "Walk / Bicycle" ? modeBgColor : {}}
             onClick={() => handleModeClick("Walk / Bicycle")}
             className="opt"
           >
             <FaWalking size={"40px"} />
-            Walk / Bicycle
+            Walk/Bicycle
           </div>
           <div
-            style={selectedMode == "Auto" ? modeBgColor : {}}
+            style={selectedMode === "Auto" ? modeBgColor : {}}
             onClick={() => handleModeClick("Auto")}
             className="opt"
           >
@@ -91,7 +100,7 @@ const HomePage = () => {
             Auto
           </div>
           <div
-            style={selectedMode == "Cab Service" ? modeBgColor : {}}
+            style={selectedMode === "Cab Service" ? modeBgColor : {}}
             onClick={() => handleModeClick("Cab Service")}
             className="opt"
           >
@@ -107,47 +116,47 @@ const HomePage = () => {
         </div>
         <div className="Options">
           <div
-            style={selectedDistance == "5" ? distanceBgColor : {}}
-            onClick={() => handleDistanceClick("5")}
+            style={selectedDistance === "0" ? distanceBgColor : {}}
+            onClick={() => handleDistanceClick("0")}
             className="opt"
           >
             {" "}
             {"<"} 5km{" "}
           </div>
           <div
-            style={selectedDistance == "5-10" ? distanceBgColor : {}}
-            onClick={() => handleDistanceClick("5-10")}
+            style={selectedDistance === "5" ? distanceBgColor : {}}
+            onClick={() => handleDistanceClick("5")}
             className="opt"
           >
             {" "}
             5 - 10 km{" "}
           </div>
           <div
-            style={selectedDistance == "10-15" ? distanceBgColor : {}}
-            onClick={() => handleDistanceClick("10-15")}
+            style={selectedDistance === "10" ? distanceBgColor : {}}
+            onClick={() => handleDistanceClick("10")}
             className="opt"
           >
             {" "}
             10- 15 km{" "}
           </div>
           <div
-            style={selectedDistance == "15-20" ? distanceBgColor : {}}
-            onClick={() => handleDistanceClick("15-20")}
+            style={selectedDistance === "15" ? distanceBgColor : {}}
+            onClick={() => handleDistanceClick("15")}
             className="opt"
           >
             {" "}
             15- 20 km{" "}
           </div>
           <div
-            style={selectedDistance == "20-25" ? distanceBgColor : {}}
-            onClick={() => handleDistanceClick("20-25")}
+            style={selectedDistance === "20" ? distanceBgColor : {}}
+            onClick={() => handleDistanceClick("20")}
             className="opt"
           >
             {" "}
             20- 25 km{" "}
           </div>
           <div
-            style={selectedDistance == "25" ? distanceBgColor : {}}
+            style={selectedDistance === "25" ? distanceBgColor : {}}
             onClick={() => handleDistanceClick("25")}
             className="opt"
           >
@@ -157,14 +166,13 @@ const HomePage = () => {
         </div>
       </div>
 
-      <div class="btn">
-        <button
-          onClick={() => setData(selectedMode, selectedDistance)}
-          class="button"
-        >
+      <div className="btn">
+        <button onClick={() => clickHandle()} className="button">
           Submit -{">"}
         </button>
       </div>
+
+      {err ? <p>Please answer both questions.</p> : ""}
     </div>
   );
 };

@@ -1,4 +1,3 @@
-import React from "react";
 import { useLocation } from "react-router-dom";
 import jsonFile1 from "../Json/sample_db_0km.json";
 import jsonFile2 from "../Json/sample_db_5km.json";
@@ -8,10 +7,11 @@ import jsonFile5 from "../Json/sample_db_20km.json";
 import jsonFile6 from "../Json/sample_db_25km.json";
 
 const Modes = () => {
+
   const location = useLocation();
-  console.log(location.state.distance);
-  let selectedDistance = location.state.distance;
-  let selectedMode = location.state.Mode;
+  console.log( location.Mode);
+  let selectedDistance = location.selectedDistance;
+  let selectedMode = location.selectedMode;
   let Mode;
   let dataBase;
 
